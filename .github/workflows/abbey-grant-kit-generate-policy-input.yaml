@@ -15,18 +15,20 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_wrapper: false
-      - name: Terraform Init
-        id: init
-        run: terraform init
-      - name: Terraform Plan
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - run: bundle exec rake
+      - name: Terraspace Plan
         id: plan
-        run: terraform plan -no-color -input=false -out=tfplan
+        run: bundle exec terraspace plan demo -no-color -input=false -out=tfplan
         env:
           TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
           TF_VAR_password: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      - name: Terraform Show
+      - name: Terraspace Show
         id: show
-        run: echo "content=$(terraform show -no-color -json tfplan | jq '.variables.password |= "***" | tostring')" >> $GITHUB_OUTPUT
+        run: echo "content=$(bundle exec terraspace show demo -no-color -json tfplan | jq '.variables.password |= "***" | tostring')" >> $GITHUB_OUTPUT
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
         with:

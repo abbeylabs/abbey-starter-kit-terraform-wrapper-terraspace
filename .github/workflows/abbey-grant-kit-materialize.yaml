@@ -1,0 +1,27 @@
+name: Abbey Grant Kit Materialize
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - run: bundle exec rake
+
+      - name: Terraspace Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraspace up demo -auto-approve -input=false
+        env:
+          ABBEY_TOKEN: ${{ secrets.ABBEY_TOKEN }}
+          TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
+          TF_VAR_password: ${{ secrets.SNOWFLAKE_PASSWORD }}
