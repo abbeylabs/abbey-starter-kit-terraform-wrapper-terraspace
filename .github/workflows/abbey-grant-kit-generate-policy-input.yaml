@@ -24,6 +24,7 @@ jobs:
         id: plan
         run: bundle exec terraspace plan demo -no-color -input=false -out=tfplan
         env:
+          TF_VAR_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
           TF_VAR_password: ${{ secrets.SNOWFLAKE_PASSWORD }}
       - name: Terraspace Show
