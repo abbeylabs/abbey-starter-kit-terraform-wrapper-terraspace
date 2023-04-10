@@ -10,26 +10,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Terraform
         id: setup
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_wrapper: false
+
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
           bundler-cache: true
       - run: bundle exec rake
+
       - name: Terraspace Plan
         id: plan
         run: bundle exec terraspace plan demo -no-color -input=false -out=tfplan
         env:
+          TF_HTTP_USERNAME: starter-kit
+          TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
           TF_VAR_password: ${{ secrets.SNOWFLAKE_PASSWORD }}
+
       - name: Terraspace Show
         id: show
         run: echo "content=$(bundle exec terraspace show demo -no-color -json tfplan | jq '.variables.password |= "***" | tostring')" >> $GITHUB_OUTPUT
+
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
         with:
