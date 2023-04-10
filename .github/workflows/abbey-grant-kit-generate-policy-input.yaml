@@ -21,7 +21,8 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
-        run: bundle exec rake
+
+      - run: bundle install
 
       - name: Terraspace Plan
         id: plan
