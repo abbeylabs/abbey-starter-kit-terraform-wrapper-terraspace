@@ -25,6 +25,8 @@ jobs:
 
       - run: bundle install
 
+      - run: bundle exec terraspace new shim
+
       - name: Terraspace Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraspace up demo -auto-approve -input=false

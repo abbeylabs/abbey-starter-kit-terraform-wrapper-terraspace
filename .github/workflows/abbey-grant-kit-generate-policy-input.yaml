@@ -24,6 +24,8 @@ jobs:
 
       - run: bundle install
 
+      - run: bundle exec terraspace new shim
+
       - name: Terraspace Plan
         id: plan
         run: bundle exec terraspace plan demo -no-color -input=false -out=tfplan
