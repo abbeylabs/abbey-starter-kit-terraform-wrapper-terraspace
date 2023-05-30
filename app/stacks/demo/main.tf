@@ -56,7 +56,7 @@ resource "abbey_grant_kit" "role__pii_readonly" {
       {
         reviewers = {
           # Replace with your Primary Identity.
-          # For more information on what a Primary Identity is, visit https://docs.abbey.so.
+          # For more information on what a Primary Identity is, visit https://docs.abbey.io.
           one_of = ["replace-me@example.com"]
         }
       }
