@@ -35,16 +35,3 @@ jobs:
           TF_VAR_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
           TF_VAR_password: ${{ secrets.SNOWFLAKE_PASSWORD }}
-
-      - name: Terraspace Show
-        id: show
-        run: echo "content=$(bundle exec terraspace show demo -no-color -json tfplan | jq '.variables.password |= "***" | tostring')" >> $GITHUB_OUTPUT
-
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v2
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ```json
-            ${{ fromJson(steps.show.outputs.content) }}
-            ```
