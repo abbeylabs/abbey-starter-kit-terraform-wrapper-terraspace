@@ -14,7 +14,7 @@ jobs:
 
       - name: Setup Terraform
         id: setup
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
 
@@ -32,7 +32,7 @@ jobs:
         run: terraspace up demo -auto-approve -input=false
         env:
           TF_VAR_abbey_token: ${{ secrets.ABBEY_TOKEN }}
-          TF_HTTP_USERNAME: starter-kit
+          TF_HTTP_USERNAME: starter-kit-terraspace
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           TF_VAR_username: ${{ secrets.SNOWFLAKE_USERNAME }}
